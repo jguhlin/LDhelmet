@@ -18,6 +18,7 @@
 #define LDHELMET_TABLE_GEN_LINEAR_SOLVE_H_
 
 #include <stddef.h>
+#include <stdint.h>
 
 #include <vector>
 
@@ -32,8 +33,8 @@
 // n is the number of rows/columns in Am and bv.
 // len_Am is the number of entries in Am.
 void LinearSolve(std::vector<double> const &Am,
-                 std::vector<size_t> const &row_indexes,
-                 std::vector<size_t> const &col_indexes,
+                 std::vector<uint32_t> const &row_indexes,
+                 std::vector<uint32_t> const &col_indexes,
                  std::vector<double> const &bv,
                  std::vector<double> &x_solution);
 

@@ -73,8 +73,8 @@ void AdjustAm(IndexTables const &index_tables,
               double coeff,
               Conf const &tmp_conf,
               std::vector<double> &Am,
-              std::vector<size_t> &row_indexes,
-              std::vector<size_t> &col_indexes);
+              std::vector<uint32_t> &row_indexes,
+              std::vector<uint32_t> &col_indexes);
 
 // Set up system of linear equations for a given configuration.
 void ConstructSystem(Vec8 const &table,
@@ -86,8 +86,8 @@ void ConstructSystem(Vec8 const &table,
                      uint32_t b_mar,
                      uint32_t B_mar,
                      std::vector<double> &Am,
-                     std::vector<size_t> &row_indexes,
-                     std::vector<size_t> &col_indexes,
+                     std::vector<uint32_t> &row_indexes,
+                     std::vector<uint32_t> &col_indexes,
                      std::vector<double> &bv);
 
 // Solve SCC for inductive case.

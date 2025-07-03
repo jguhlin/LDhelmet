@@ -166,14 +166,14 @@ void AdjustAm(IndexTables const &index_tables,
               double coeff,
               Conf const &tmp_conf,
               std::vector<double> &Am,
-              std::vector<size_t> &row_indexes,
-              std::vector<size_t> &col_indexes) {
+              std::vector<uint32_t> &row_indexes,
+              std::vector<uint32_t> &col_indexes) {
   // Conf to column index.
   size_t tmp_conf_index = ConfToIndex(index_tables, tmp_conf);
 
   Am.push_back(-1.0 * (coeff / denominator));
-  row_indexes[Am.size() - 1] = conf_index;
-  col_indexes[Am.size() - 1] = tmp_conf_index;
+  row_indexes[Am.size() - 1] = static_cast<uint32_t>(conf_index);
+  col_indexes[Am.size() - 1] = static_cast<uint32_t>(tmp_conf_index);
 }
 
 void ConstructSystem(Vec8 const &table,
@@ -185,8 +185,8 @@ void ConstructSystem(Vec8 const &table,
                      uint32_t b_mar,
                      uint32_t B_mar,
                      std::vector<double> &Am,
-                     std::vector<size_t> &row_indexes,
-                     std::vector<size_t> &col_indexes,
+                     std::vector<uint32_t> &row_indexes,
+                     std::vector<uint32_t> &col_indexes,
                      std::vector<double> &bv) {
   Conf conf;
   uint32_t min_ab = std::min(a_mar, b_mar);
@@ -636,8 +636,8 @@ void ConstructSystem(Vec8 const &table,
           }
 
           Am.push_back(1.0);
-          col_indexes[Am.size() - 1] = conf_index;
-          row_indexes[Am.size() - 1] = conf_index;
+          col_indexes[Am.size() - 1] = static_cast<uint32_t>(conf_index);
+          row_indexes[Am.size() - 1] = static_cast<uint32_t>(conf_index);
         }
       }
     }
@@ -666,8 +666,8 @@ void SolveSCC(Vec8 *table,
   std::vector<double> Am;
   Am.reserve(9 * num_confs_scc);
 
-  std::vector<size_t> row_indexes(9 * num_confs_scc, 0.0);
-  std::vector<size_t> col_indexes(9 * num_confs_scc, 0.0);
+  std::vector<uint32_t> row_indexes(9 * num_confs_scc, 0);
+  std::vector<uint32_t> col_indexes(9 * num_confs_scc, 0);
   std::vector<double> bv(num_confs_scc);
 
   ConstructSystem(*table,
