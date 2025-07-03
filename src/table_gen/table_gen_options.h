@@ -40,6 +40,9 @@ class CmdLineOptionsTableGen : public CmdLineOptions {
   std::vector<double> thetas_;     // Population-scaled mutation rates.
   std::vector<double> rho_range_;  // Rho grid.
 
+  bool use_disk_;                  // Use temporary files for intermediate
+                                   // degrees.
+
  private:
   std::string GetUsageString(std::string const base_command,
                              std::string const program_name) const;

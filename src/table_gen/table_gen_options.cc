@@ -53,7 +53,11 @@ CmdLineOptionsTableGen::CmdLineOptionsTableGen(std::string const base_command,
     ("rhos,r",
      boost::program_options::value<std::vector<double> >(&rho_range_)
        ->multitoken()->required(),
-     "Rho values.");
+     "Rho values.")
+    ("use_disk",
+     boost::program_options::value<bool>(&use_disk_)
+       ->default_value(false),
+     "Write intermediate degrees to disk to save memory.");
 
   success_ = ParseOptions(base_command, argc, argv, version);
 }
