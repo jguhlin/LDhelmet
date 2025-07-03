@@ -26,6 +26,9 @@ typedef std::vector<Vec3>   Vec4;
 typedef std::vector<Vec4>   Vec5;
 typedef std::vector<Vec5>   Vec6;
 typedef std::vector<Vec6>   Vec7;
-typedef std::vector<Vec7>   Vec8;
+// Vec8 previously represented an eight-level nested vector for storing table
+// values.  The table code now stores a flat vector of doubles for each degree,
+// so Vec8 becomes a vector of vectors of doubles.
+typedef std::vector<std::vector<double> > Vec8;
 
 #endif  // LDHELMET_COMMON_VECTOR_DEFINITIONS_H_

@@ -201,7 +201,7 @@ void SolveDegree(double theta,
   // Free memory in table for degree - 2, which is no longer needed by
   // subsequent degrees.
   if (degree >= 4) {
-    Vec7().swap((*table)[degree - 2]);
+    std::vector<double>().swap((*table)[degree - 2]);
   }
 }
 

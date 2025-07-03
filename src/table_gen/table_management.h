@@ -24,23 +24,13 @@
 
 // Allocate memory to table.
 // Allocates memory to invalid configurations as well, and initializes them to
-// 0.0.
+// 0.0.  Returns the number of configurations allocated for the degree.
 uint64_t AllocateMemoryToTable(Vec8 *table, uint32_t degree);
 
 Conf GetCanon(Conf conf);
 
 // Set the probability of the given configuration in the table.
-inline void SetTable(Vec8 *table, Conf const &in_conf, double value) {
-  Conf conf = GetCanon(in_conf);
-  uint32_t a_mar = conf.a_ + conf.ab_ + conf.aB_;
-  uint32_t A_mar = conf.A_ + conf.Ab_ + conf.AB_;
-  uint32_t b_mar = conf.b_ + conf.ab_ + conf.Ab_;
-  uint32_t B_mar = conf.B_ + conf.aB_ + conf.AB_;
-  uint32_t degree = a_mar + A_mar + b_mar + B_mar;
-  (*table)[degree][a_mar][A_mar][b_mar]
-          [conf.ab_][conf.aB_][conf.Ab_][conf.AB_] = value;
-  return;
-}
+void SetTable(Vec8 *table, Conf const &in_conf, double value);
 
 // Get the probability of the given configuration from table.
 // table also contains entries for invalid configurations.
