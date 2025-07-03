@@ -30,6 +30,8 @@
 #include "table_gen/output_writer.h"
 #include "table_gen/solve_degree.h"
 #include "table_gen/solve_degree-inl.h"
+#include "table_gen/memory_manager.h"
+#include "table_gen/memory_manager-inl.h"
 #include "table_gen/table_gen_options.h"
 
 int TableGenComponent(std::string const base_command, int argc, char **argv) {
@@ -56,6 +58,7 @@ int TableGenComponent(std::string const base_command, int argc, char **argv) {
 
   std::string const &conf_file = cmd_line_options.conf_file_;
   std::string const &output_file = cmd_line_options.output_file_;
+  bool use_disk = cmd_line_options.use_disk_;
 
   std::vector<double> const &thetas = cmd_line_options.thetas_;
 
@@ -205,10 +208,18 @@ int TableGenComponent(std::string const base_command, int argc, char **argv) {
         printf("rho: %g\n", rhos[rho_id]);
 
         Vec8 table(max_degree + 1);
+        std::unique_ptr<TableGenMemoryManager> mem_mgr;
+        if (use_disk) {
+          mem_mgr.reset(new TableGenMemoryManager(&table, max_degree));
+        }
 
         printf("Degrees: ");
 
         for (uint64_t degree = 2; degree <= max_degree; ++degree) {
+            if (use_disk) {
+              mem_mgr->LoadDegrees(degree);
+            }
+
             // Solve given degree.
             SolveDegree(thetas[theta_id],
                         rhos[rho_id],
@@ -223,6 +234,14 @@ int TableGenComponent(std::string const base_command, int argc, char **argv) {
 
             // Write out likelihoods.
             input_conf_binary_writer.Write(degree, table);
+
+            if (use_disk) {
+              mem_mgr->WriteDegreeToFile(degree);
+              mem_mgr->FreeDegree(degree);
+              if (degree >= 1) {
+                mem_mgr->FreeDegree(degree - 1);
+              }
+            }
         }
         printf("\n");
       }
