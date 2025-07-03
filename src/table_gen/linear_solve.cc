@@ -26,18 +26,18 @@ static double const kMaxIterations = 100000;
 static double const kTol = 1e-30;
 
 void LinearSolve(std::vector<double> const &Am,
-                 std::vector<size_t> const &row_indexes,
-                 std::vector<size_t> const &col_indexes,
+                 std::vector<uint32_t> const &row_indexes,
+                 std::vector<uint32_t> const &col_indexes,
                  std::vector<double> const &bv,
                  std::vector<double> &x_solution) {
-  size_t n = bv.size();
-  size_t len_Am = Am.size();
+  uint32_t n = static_cast<uint32_t>(bv.size());
+  uint32_t len_Am = static_cast<uint32_t>(Am.size());
 
   std::vector<double> x_solution_old(n, 0.0);
 
-  for (uint64_t i = 0; i < kMaxIterations; ++i) {
-    uint64_t entry = 0;
-    for (uint64_t j = 0; j < n; ++j) {
+  for (uint32_t i = 0; i < static_cast<uint32_t>(kMaxIterations); ++i) {
+    uint32_t entry = 0;
+    for (uint32_t j = 0; j < n; ++j) {
       double r = 0;
       double s = 0;
       while (entry < len_Am && row_indexes[entry] == j) {
@@ -52,7 +52,7 @@ void LinearSolve(std::vector<double> const &Am,
     }
 
     double norm = 0;
-    for (uint64_t j = 0; j < n; ++j) {
+    for (uint32_t j = 0; j < n; ++j) {
       norm = std::max(norm, std::abs(x_solution[j] - x_solution_old[j]));
     }
 
